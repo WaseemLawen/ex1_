@@ -1,5 +1,6 @@
-#include "RLEList.h"
+
 #include <string.h>
+#include<stdio.h>
 
 struct RLEList_t{
     char letter;
@@ -7,7 +8,7 @@ struct RLEList_t{
     struct RLEList_t* next;
 };
 
-
+#include "RLEList.h"
 //implement the functions here
 
 RLEList RLEListCreate(){
@@ -15,7 +16,7 @@ RLEList RLEListCreate(){
     if(!ptr){
         return NULL;    
     }
-    ptr->letter = NULL;
+    ptr->letter = 0;
     ptr->repeatition=0;
     ptr->next=NULL;
     return ptr;
@@ -71,10 +72,10 @@ int RLEListSize(RLEList list){
 }
 
 RLEListResult RLEListRemove(RLEList list, int index){
-    if(index>=RLEListSize( list) || index<0){
+    if((list != NULL) && (index>=RLEListSize( list) || index<0)){
         return RLE_LIST_INDEX_OUT_OF_BOUNDS;
     }
-    if(!list){
+    if(list==NULL){
         return RLE_LIST_NULL_ARGUMENT;
     }
     RLEList tmp = list;
@@ -109,15 +110,20 @@ RLEListResult RLEListRemove(RLEList list, int index){
 }
 
 char RLEListGet(RLEList list, int index, RLEListResult *result){
-    if(index>=RLEListSize( list) || index<0){
-        *result= RLE_LIST_INDEX_OUT_OF_BOUNDS;
+    if((list != NULL) && (index>=RLEListSize( list) || index<0)){
+        if(result != NULL)
+         *result= RLE_LIST_INDEX_OUT_OF_BOUNDS;
+        return 0;
     }
-    if(!list){
-        *result= RLE_LIST_NULL_ARGUMENT;
+    else if(list==NULL){
+        if(result != NULL)
+            *result= RLE_LIST_NULL_ARGUMENT;
+        return 0;
     }
     else{
         char value;
-        *result = RLE_LIST_SUCCESS;
+        if(result != NULL)
+            *result = RLE_LIST_SUCCESS;
         RLEList tmp = list;
         int counter=tmp->repeatition-1;
         while(counter<index){
@@ -131,6 +137,10 @@ char RLEListGet(RLEList list, int index, RLEListResult *result){
 }
 
 char* RLEListExportToString(RLEList list, RLEListResult* result){
+    if(list==NULL){
+        *result= RLE_LIST_NULL_ARGUMENT;
+        return NULL;
+    }
     int counter=1;
     RLEList ToCount = list;
     while(ToCount->next!=NULL){
@@ -139,35 +149,34 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
     }
     char* ListString = malloc(sizeof(char)*counter*3);
     int index=0;
-    if(!list){
-        *result= RLE_LIST_NULL_ARGUMENT;
-        return NULL;
-    }
     RLEList tmp = list;
     while(tmp!=NULL){
-        ListString+index++=tmp->letter;
-        ListString+index++=tmp->repeatition;
-        ListString+index++='\n';
+        ListString[index++]=tmp->letter;
+        ListString[index++]=(char)tmp->repeatition;
+        ListString[index++]='\n';
+        tmp=tmp->next;
     }
     *result =RLE_LIST_SUCCESS;
     return ListString;
 }
 
 RLEListResult RLEListMap(RLEList list, MapFunction map_function){
-    RLEListResult* result;
-    char prev;
+    RLEListResult* result=NULL;
+    //char prev;
+    int i = 0, j=0;
     int length = RLEListSize(list), count=0;
     char* string = RLEListExportToString(list,result);
     if (*result==RLE_LIST_NULL_ARGUMENT){
         return *result;
     }
-    char* mappedString = malloc(sizeof(char)*(length+1))
-    for(int i = 0; i<strlen(string); i+=3){
+    char* mappedString = malloc(sizeof(char)*(length+1));
+    for(i = 0; i<strlen(string); i+=3){
 
-        for (int j = 0; j<string[i+1]; j++){
+        for (j = 0; j<string[i+1]; j++){
             mappedString[j+count] = map_function(string[i]);
+            count+=(j+1);
         }
-         count+=(j+1);
+         
     }
     return RLE_LIST_SUCCESS;
 }
