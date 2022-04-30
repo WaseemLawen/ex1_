@@ -8,6 +8,18 @@ void invertAsciiArt(FILE* source)
     
 
 }
+void AsciiArtTool (FILE* source,FILE* target,char* flag){
+     if(!strcmp(flag,"-i")){
+        //inverted dog
+
+    }
+    if(!strcmp(flag,"-e")){
+
+        RLEList list = asciiArtRead(source);
+        RLEListResult *result = asciiArtPrintEncoded(list, target);
+
+    }
+}
 void error(char* message, char* filename)
 {
     printf("%s %s\n", message);
@@ -22,16 +34,10 @@ int main(int argc, char** argv)
     FILE* source = fopen(argv[2], "r");
     FILE* target = fopen(argv[3], "w");
 
-    if(!strcmp(argv[1],"-i")){
-        //inverted dog
+    AsciiArtTool(source,target,argv[1]);
 
-    }
-    if(!strcmp(argv[1],"-e")){
-
-        RLEList list = asciiArtRead(source);
-        RLEListResult *result = asciiArtPrintEncoded(list, target);
-
-    }
+   fclose(source);
+   fclose(target);
 
     return 0;
 }
