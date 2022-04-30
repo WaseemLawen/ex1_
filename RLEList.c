@@ -1,7 +1,4 @@
-
 #include <string.h>
-#include<stdio.h>
-
 struct RLEList_t{
     char letter;
     int repeatition;

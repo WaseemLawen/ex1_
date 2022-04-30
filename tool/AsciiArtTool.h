@@ -1,9 +1,9 @@
-#include <stdio.h>
-#include <stdbool.h>
-#include<stdlib.h>
+//#include <stdio.h>
+//#include <stdbool.h>
+//#include<stdlib.h>
 
+#include "AsciiArtTool.c"
 
-#include "RLEList.c"
 
 RLEList asciiArtRead(FILE* in_stream);
 

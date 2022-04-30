@@ -1,6 +1,6 @@
-#include <string.h>
-#include<stdio.h>
-#include "AsciiArtTool.h"
+//#include <string.h>
+//#include<stdio.h>
+#include "RLEList.c"
 
 RLEList asciiArtRead(FILE* in_stream)
 {
@@ -9,14 +9,14 @@ RLEList asciiArtRead(FILE* in_stream)
   int length = 0, i = 0;
   char c;
   FILE* fptr = in_stream;
-  while(c=fgetc(fptr)!=EOF) {
+  while((c=fgetc(fptr))!=EOF) {
 	  length++;
   }
   char* string = malloc(sizeof(char)*(length+1));
   fgets(string, length, in_stream);
   for(i=0; i<length; i++)
   {
-    RLEListResult result =  RLEListAppend(list, string[i]); // *result ? result
+    *result =  RLEListAppend(list, string[i]); // *result ? result
   }
 
    char* exportedString = RLEListExportToString(list, result); // where is exportedString used
@@ -45,6 +45,7 @@ RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
 
 RLEListResult asciiArtPrintEncoded(RLEList list, FILE *out_stream)
 {
+
   if(!list || !out_stream){
         return RLE_LIST_NULL_ARGUMENT;
     } 
