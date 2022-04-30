@@ -5,7 +5,7 @@
 RLEList asciiArtRead(FILE* in_stream)
 {
   RLEList list = RLEListCreate();
-  RLEListResult* result=NULL;
+  RLEListResult* result=NULL; //reuslt ? *result
   int length = 0, i=0;
   char c;
   FILE* fptr = in_stream;
@@ -16,11 +16,11 @@ RLEList asciiArtRead(FILE* in_stream)
   fgets(string, length, in_stream);
   for(i=0; i<length; i++)
   {
-    result = RLEListResult RLEListAppend(list, string[i]) {
-  }
-  char* exportedString = RLEListExportToString(list, result); // where is exportedString used
-  free(string); //
-  return list;
+    RLEListResult result =  RLEListAppend(list, string[i]); // *result ? result
+
+   char* exportedString = RLEListExportToString(list, result); // where is exportedString used
+   free(string); //
+   return list;
 }
 
 
