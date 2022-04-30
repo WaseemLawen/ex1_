@@ -3,7 +3,6 @@
 #include<stdlib.h>
 
 
-#include "RLEList.h"
 #include "RLEList.c"
 
 RLEList asciiArtRead(FILE* in_stream);
