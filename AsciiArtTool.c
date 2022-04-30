@@ -17,6 +17,7 @@ RLEList asciiArtRead(FILE* in_stream)
   for(i=0; i<length; i++)
   {
     RLEListResult result =  RLEListAppend(list, string[i]); // *result ? result
+  }
 
    char* exportedString = RLEListExportToString(list, result); // where is exportedString used
    free(string); //
@@ -28,11 +29,11 @@ RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
 {
   int length = RLEListSize(list), i=0;
   char c;
-  char* string = malloc(sizeof(char)*(length+1))
+  char* string = malloc(sizeof(char)*(length+1));
   RLEListResult* result=NULL;
   for(i=0; i<=length; i++)
   {
-    c = RLEListGet(list, i, result)
+    c = RLEListGet(list, i, result);
     string[i] = c;
   }
   fputs(string, out_stream);
@@ -43,7 +44,7 @@ RLEListResult asciiArtPrintEncoded(RLEList list, FILE *out_stream)
 {
   RLEListResult* result=NULL;
   char* exportedString = RLEListExportToString(list, result);
-  fputs(exportedString, out_stream)
+  fputs(exportedString, out_stream);
   return result;
 }
 
