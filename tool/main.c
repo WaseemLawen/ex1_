@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "AsciiArtTool.h"
+#include "RLEList.h"
 
 RLEListResult invertAsciiArt(FILE* source,FILE* target)
 {
@@ -15,29 +16,49 @@ RLEListResult invertAsciiArt(FILE* source,FILE* target)
         }
         tmp=tmp->next;
     }
-    return asciiArtPrint(list,target);
+    RLEListDestroy(tmp);
+    RLEListResult result = asciiArtPrint(list,target);
+    free(list);
+    return result;
 }
 
 RLEListResult AsciiArtTool (FILE* source,FILE* target,char* flag){
-    RLEListResult *result = NULL;
-     if(!strcmp(flag,"-i")){
-         *result = invertAsciiArt(source,target);
-    }
-    if(!strcmp(flag,"-e")){
+    //RLEListResult *result = NULL;
+    RLEListResult result = invertAsciiArt(source,target);
+    if(flag!=NULL)
+    {
+        if(!strcmp(flag,"-i"))
+        {
+            return result;
+        }
+        if(!strcmp(flag,"-e"))
+        {
 
-        RLEList list = asciiArtRead(source);
-        *result = asciiArtPrintEncoded(list, target);
-
+            RLEList list = asciiArtRead(source);
+            result = asciiArtPrintEncoded(list, target);
+            RLEListDestroy(list);
+        }
     }
-    return *result;
+    
+    return result;
 }
+
 int main(int argc, char** argv)
 {
-    
+    if (argv[2]==NULL || argv[3]==NULL){
+        return 0;
+    }
+    if(argc<=0 || argc>4){
+        return 0;
+    }
     FILE* source = fopen(argv[2], "r");
     FILE* target = fopen(argv[3], "w");
 
-    AsciiArtTool(source,target,argv[1]);
+    RLEListResult result = AsciiArtTool(source,target,argv[1]);
+    if (result == RLE_LIST_SUCCESS)
+    {
+        printf("success");
+    }
 
    fclose(source);
    fclose(target);

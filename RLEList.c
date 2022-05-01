@@ -1,10 +1,7 @@
 #include <string.h>
-struct RLEList_t{
-    char letter;
-    int repeatition;
-    struct RLEList_t* next;
-};
 
+
+#include "struct.c"
 #include "RLEList.h"
 //implement the functions here
 
@@ -133,6 +130,18 @@ char RLEListGet(RLEList list, int index, RLEListResult *result){
     return 0;
 }
 
+int intLength(int x)
+{
+    int count = 0;
+    while (x != 0)
+    {
+        count++;
+        x/=10;
+
+    }
+    return count;
+}
+
 char* RLEListExportToString(RLEList list, RLEListResult* result){
     if(list==NULL){
         *result= RLE_LIST_NULL_ARGUMENT;
@@ -141,21 +150,35 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
     int counter=1;
     RLEList ToCount = list;
     while(ToCount->next!=NULL){
-        counter++;
+        counter+=(2+intLength(ToCount->repeatition));
         ToCount=ToCount->next;
     }
-    char* ListString = malloc(sizeof(char)*counter*3);
+    char* ListString = malloc(sizeof(char)*(counter+1));
+    if (ListString==NULL)
+    {
+        free(ListString);
+        return NULL;
+    }
     int index=0;
     RLEList tmp = list;
     while(tmp!=NULL){
         ListString[index++]=tmp->letter;
-        ListString[index++]=(char)tmp->repeatition;
+        int len = intLength(tmp->repeatition);
+        int unit =0;
+        while(len)
+        {
+            num = tmp->repeatition;
+            ListString[index++]= num/10^len;
+            len--;
+        }
+        ListString[index++]=;
         ListString[index++]='\n';
         tmp=tmp->next;
     }
     *result =RLE_LIST_SUCCESS;
     return ListString;
 }
+
 
 RLEListResult RLEListMap(RLEList list, MapFunction map_function){
     RLEListResult* result=NULL;
