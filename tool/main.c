@@ -18,25 +18,29 @@ RLEListResult invertAsciiArt(FILE* source,FILE* target)
     }
     RLEListDestroy(tmp);
     RLEListResult result = asciiArtPrint(list,target);
-    free(list);
+    RLEListDestroy(list);
     return result;
 }
 
 RLEListResult AsciiArtTool (FILE* source,FILE* target,char* flag){
     //RLEListResult *result = NULL;
-    RLEListResult result = invertAsciiArt(source,target);
+    RLEList list = RLEListCreate();
+    RLEListResult result = RLE_LIST_ERROR;
+    
     if(flag!=NULL)
     {
         if(!strcmp(flag,"-i"))
         {
-            return result;
-        }
+            result = invertAsciiArt(source,target);
+            return result; 
+            }
         if(!strcmp(flag,"-e"))
         {
-
-            RLEList list = asciiArtRead(source);
-            result = asciiArtPrintEncoded(list, target);
-            RLEListDestroy(list);
+            if(source){
+                list = asciiArtRead(source);
+                result = asciiArtPrintEncoded(list, target);
+                RLEListDestroy(list);
+            }
         }
     }
     

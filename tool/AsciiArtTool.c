@@ -24,8 +24,6 @@ RLEList asciiArtRead(FILE* in_stream)
     }
     free(string); 
   }
-
-   //char* exportedString = RLEListExportToString(list, result); // where is exportedString used
  
    return list;
 }
@@ -62,7 +60,11 @@ RLEListResult asciiArtPrintEncoded(RLEList list, FILE *out_stream)
   RLEListResult* result=NULL;
   char* exportedString = RLEListExportToString(list, result);
   fputs(exportedString, out_stream);
-  free(exportedString);
+  if (exportedString)
+  {
+    free(exportedString);
+  }
+  
   return RLE_LIST_SUCCESS;
 }
 

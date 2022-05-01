@@ -143,7 +143,7 @@ int intLength(int x)
 }
 
 int power(int a,int b){
-    while(b-1){
+    while(b-1>0){
         a*=a;
         b--;
     }
@@ -152,7 +152,9 @@ int power(int a,int b){
 
 char* RLEListExportToString(RLEList list, RLEListResult* result){
     if(list==NULL){
-        *result= RLE_LIST_NULL_ARGUMENT;
+        if(result != NULL){
+             *result= RLE_LIST_NULL_ARGUMENT;
+        }
         return NULL;
     }
     RLEList ToCount = list;
@@ -161,6 +163,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
         counter+=(2+intLength(ToCount->repeatition));
         ToCount=ToCount->next;
     }
+    RLEListDestroy(ToCount);
     char* ListString = malloc(sizeof(char)*(counter+1));
     if (ListString==NULL)
     {
@@ -176,36 +179,51 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
         while(len)
         {
             int division = power(10,len-1);
-            int curr_num = num/division;
-            ListString[index++]=(char)curr_num;
-            num-=curr_num*division;
+            if(division){
+                int curr_num = num/division;
+                ListString[index++]=(char)curr_num;
+                num-=curr_num*division;
+            }
             len--;
         }
         ListString[index++]='\n';
         tmp=tmp->next;
     }
-    *result =RLE_LIST_SUCCESS;
+    RLEListDestroy(tmp);
+    if(result != NULL){
+        *result =RLE_LIST_SUCCESS;
+    }
+
     return ListString;
 }
 
 
 RLEListResult RLEListMap(RLEList list, MapFunction map_function){
-    RLEListResult* result=NULL;
-    //char prev;
-    int i = 0, j=0;
-    int length = RLEListSize(list), count=0;
-    char* string = RLEListExportToString(list,result);
-    if (*result==RLE_LIST_NULL_ARGUMENT){
-        return *result;
+    if(!list || map_function == NULL){
+        return RLE_LIST_NULL_ARGUMENT;
     }
-    char* mappedString = malloc(sizeof(char)*(length+1));
-    for(i = 0; i<strlen(string); i+=3){
+    RLEList tmp = list;
+    while(tmp != NULL){
+        tmp->letter = map_function(tmp->letter);
+        tmp = tmp->next;
+    }
 
-        for (j = 0; j<string[i+1]; j++){
-            mappedString[j+count] = map_function(string[i]);
-            count+=(j+1);
+    tmp = list;
+    while(tmp->next != NULL){
+        if(tmp->letter == tmp->next->letter){
+             RLEList remove = tmp->next;
+             tmp->repeatition += remove->repeatition;
+             if(remove->next != NULL){
+                 tmp->next = remove->next;
+             }
+             else{
+                 tmp->next = NULL;
+             }
+             free(remove);
         }
-         
+        else{
+            tmp = tmp->next;
+        }
     }
     return RLE_LIST_SUCCESS;
 }
