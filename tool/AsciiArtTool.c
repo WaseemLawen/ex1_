@@ -12,18 +12,21 @@ RLEList asciiArtRead(FILE* in_stream)
   int length = 0, i = 0;
   char c;
   FILE* fptr = in_stream;
-  while((c=fgetc(fptr))!=EOF) {
-	  length++;
-  }
-  char* string = malloc(sizeof(char)*(length+1));
-  fgets(string, length, in_stream);
-  for(i=0; i<length; i++)
-  {
-    *result =  RLEListAppend(list, string[i]); 
+  if (fptr){
+    while((c=fgetc(fptr))!=EOF) {
+      length++;
+    }
+    char* string = malloc(sizeof(char)*(length+1));
+    fgets(string, length, in_stream);
+    for(i=0; i<length; i++)
+    {
+      *result =  RLEListAppend(list, string[i]); 
+    }
+    free(string); 
   }
 
    //char* exportedString = RLEListExportToString(list, result); // where is exportedString used
-   free(string); 
+ 
    return list;
 }
 

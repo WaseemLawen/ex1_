@@ -142,14 +142,22 @@ int intLength(int x)
     return count;
 }
 
+int power(int a,int b){
+    while(b-1){
+        a*=a;
+        b--;
+    }
+    return a;
+}
+
 char* RLEListExportToString(RLEList list, RLEListResult* result){
     if(list==NULL){
         *result= RLE_LIST_NULL_ARGUMENT;
         return NULL;
     }
-    int counter=1;
     RLEList ToCount = list;
-    while(ToCount->next!=NULL){
+    int counter=0;
+    while(ToCount!=NULL){
         counter+=(2+intLength(ToCount->repeatition));
         ToCount=ToCount->next;
     }
@@ -164,14 +172,15 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
     while(tmp!=NULL){
         ListString[index++]=tmp->letter;
         int len = intLength(tmp->repeatition);
-        int unit =0;
+        int num =tmp->repeatition;
         while(len)
         {
-            num = tmp->repeatition;
-            ListString[index++]= num/10^len;
+            int division = power(10,len-1);
+            int curr_num = num/division;
+            ListString[index++]=curr_num;
+            num-=curr_num*division;
             len--;
         }
-        ListString[index++]=;
         ListString[index++]='\n';
         tmp=tmp->next;
     }

@@ -53,7 +53,7 @@ int main(int argc, char** argv)
     }
     FILE* source = fopen(argv[2], "r");
     FILE* target = fopen(argv[3], "w");
-
+    if(!source || !target) return 0;
     RLEListResult result = AsciiArtTool(source,target,argv[1]);
     if (result == RLE_LIST_SUCCESS)
     {
