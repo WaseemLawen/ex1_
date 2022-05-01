@@ -177,7 +177,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
         {
             int division = power(10,len-1);
             int curr_num = num/division;
-            ListString[index++]=curr_num;
+            ListString[index++]=(char)curr_num;
             num-=curr_num*division;
             len--;
         }
