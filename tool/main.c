@@ -4,12 +4,30 @@
 #include "AsciiArtTool.h"
 #include "RLEList.h"
 
+char map_function(char c){
+    if((c) == ' ')
+        {
+             return '@';
+        }
+        else if((c) == '@')
+        {
+            return ' ';
+
+        }
+    return c;
+
+}
+
 RLEListResult invertAsciiArt(FILE* source,FILE* target)
 {
     RLEList list = asciiArtRead(source);
-   
-    RLEList tmp = list;
-    while(tmp!=NULL)
+    RLEListResult result = RLE_LIST_ERROR;
+    MapFunction map = map_function;
+    result = RLEListMap(list, map);
+
+    //RLEList tmp = list;
+
+    /*while(tmp!=NULL)
     {
         if((tmp->letter) == ' ')
         {
@@ -20,11 +38,10 @@ RLEListResult invertAsciiArt(FILE* source,FILE* target)
             tmp->letter = ' ';
 
         }
-        tmp=tmp->next;
+        tmp=tmp->next;*/
         
-    }
-    RLEListDestroy(tmp);
-    RLEListResult result = asciiArtPrint(list,target);
+    //RLEListDestroy(tmp);
+    result = asciiArtPrint(list,target);
     RLEListDestroy(list);
     return result;
 }

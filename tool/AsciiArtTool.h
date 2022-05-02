@@ -5,7 +5,7 @@
 #ifndef AsciiArtTool_H
 #define AsciiArtTool_H
 #include "RLEList.h"
-#include "struct.c"
+//#include "struct.c"
 
 
 RLEList asciiArtRead(FILE* in_stream);

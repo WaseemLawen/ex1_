@@ -1,7 +1,7 @@
 #include <string.h>
 
 
-#include "struct.c"
+//#include "struct.c"
 #include "RLEList.h"
 //implement the functions here
 struct RLEList_t{
