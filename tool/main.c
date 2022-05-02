@@ -7,6 +7,7 @@
 RLEListResult invertAsciiArt(FILE* source,FILE* target)
 {
     RLEList list = asciiArtRead(source);
+   
     RLEList tmp = list;
     while(tmp!=NULL)
     {
@@ -14,7 +15,13 @@ RLEListResult invertAsciiArt(FILE* source,FILE* target)
         {
             tmp->letter = '@';
         }
+        else if((tmp->letter) == '@')
+        {
+            tmp->letter = ' ';
+
+        }
         tmp=tmp->next;
+        
     }
     RLEListDestroy(tmp);
     RLEListResult result = asciiArtPrint(list,target);

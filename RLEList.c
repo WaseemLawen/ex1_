@@ -1,9 +1,14 @@
 #include <string.h>
 
 
-#include "struct.c"
+//#include "struct.c"
 #include "RLEList.h"
 //implement the functions here
+struct RLEList_t{
+    char letter;
+    int repeatition;
+    struct RLEList_t* next;
+};
 
 RLEList RLEListCreate(){
     RLEList ptr = malloc(sizeof(*ptr));
@@ -26,29 +31,31 @@ void RLEListDestroy(RLEList list){
 }
 
 RLEListResult RLEListAppend(RLEList list, char value){
-    RLEList last = list;
     if(!list || !value){
         return RLE_LIST_NULL_ARGUMENT;
     } 
     else{
-        if(list->letter == value){
-            list->repeatition++;
-        }
-        else{
-            RLEList newHead = RLEListCreate();
-            if(!newHead){
-                return RLE_LIST_OUT_OF_MEMORY;
-            }
+            RLEList last = list;
             while(last->next!=NULL){
                 last=last->next;
             }
-            last->next=newHead;
-            newHead->letter=value;
-            newHead->repeatition++;
+            if(last->letter == value){
+                (last->repeatition)++;
+            }
+            else{
+                RLEList newHead = RLEListCreate();
+                if(!newHead){
+                      return RLE_LIST_OUT_OF_MEMORY;
+                 }
+                last->next=newHead;
+                newHead->letter=value;
+                (newHead->repeatition)++;
+                }
+                 
         }
 
-        return RLE_LIST_SUCCESS;
-    }    
+    return RLE_LIST_SUCCESS;
+       
 }
 
 int RLEListSize(RLEList list){
@@ -143,10 +150,14 @@ int intLength(int x)
 }
 
 int power(int a,int b){
-    while(b-1>0){
+    if(b==0){
+        return 1;
+    }
+    while(b>1){
         a*=a;
         b--;
     }
+    
     return a;
 }
 
@@ -157,6 +168,11 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
         }
         return NULL;
     }
+    if(list->repeatition == 0){
+        list = list->next;
+        
+    }
+    
     RLEList ToCount = list;
     int counter=0;
     while(ToCount!=NULL){
@@ -164,30 +180,29 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
         ToCount=ToCount->next;
     }
     char* ListString = malloc(sizeof(char)*(counter+1));
+
     if (ListString==NULL)
     {
         free(ListString);
         return NULL;
     }
+    
     int index=0;
     RLEList tmp = list;
     while(tmp!=NULL){
-        ListString[index++]=tmp->letter;
-        int len = intLength(tmp->repeatition);
-        int num =tmp->repeatition;
-        while(len)
-        {
-            int division = power(10,len-1);
-            if(division){
-                int curr_num = num/division;
-                ListString[index++]=(char)curr_num;
-                num-=curr_num*division;
+            ListString[index++]=tmp->letter;
+            int len = intLength(tmp->repeatition);
+            int num =tmp->repeatition;
+            
+            while(len > 0){
+                ListString[index++] = (char)((num/(power(10,len-1))) % 10 + '0');
+                len--;
             }
-            len--;
-        }
-        ListString[index++]='\n';
-        tmp=tmp->next;
+            ListString[index++]='\n';
+            
+            tmp=tmp->next;
     }
+    ListString[index++]='\0';   
     if(result != NULL){
         *result =RLE_LIST_SUCCESS;
     }
@@ -225,5 +240,3 @@ RLEListResult RLEListMap(RLEList list, MapFunction map_function){
     }
     return RLE_LIST_SUCCESS;
 }
-
-

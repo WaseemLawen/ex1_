@@ -1,0 +1,22 @@
+
+CC = gcc
+MAIN= tool/main
+ASCII_ART_TOOL= tool/AsciiArtTool
+RLELIST= /home/mtm/public/2122b/ex1/RLEList
+OBJS = $(ASCII_ART_TOOL).o $(MAIN).o RLEList.o
+EXEC = AsciiArtTool
+CFLAGS = -std=c99 -I/home/waseem.lawin/ex1_ -Itool -Wall -pedantic-errors -Werror -DNDEBUG -g
+$(EXEC) : $(OBJS)
+		$(CC) $(CFLAGS) $(OBJS)  -o $@
+$(ASCII_ART_TOOL).o: $(ASCII_ART_TOOL).c $(RLELIST).h $(ASCII_ART_TOOL).h struct.c
+$(MAIN).o: $(MAIN).c $(RLELIST).h $(ASCII_ART_TOOL).h struct.c
+RLEList.o: RLEList.c $(RLELIST).h struct.c
+clean:
+	  rm -f $(OBJS) $(EXEC)
+
+
+
+
+
+	
+
