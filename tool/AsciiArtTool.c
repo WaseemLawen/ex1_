@@ -4,11 +4,18 @@
 
 #include "AsciiArtTool.h"
 #include "RLEList.h"
+#define BUFFER_SIZE 2
 
 RLEList asciiArtRead(FILE* in_stream)
 {
   RLEList list = RLEListCreate();
-  RLEListResult *result = NULL; //reuslt ? *result
+  char buffer[BUFFER_SIZE]="\n";
+  while(fgets(buffer,BUFFER_SIZE, in_stream)!= NULL)
+  {
+    RLEListAppend(list, buffer[0]);
+  }
+  return list;
+ /* RLEListResult *result = NULL; //reuslt ? *result
   int length = 0, i = 0;
   char c;
   FILE* fptr = in_stream;
@@ -24,8 +31,8 @@ RLEList asciiArtRead(FILE* in_stream)
     }
     free(string); 
   }
- 
-   return list;
+ */
+  // return list;
 }
 
 

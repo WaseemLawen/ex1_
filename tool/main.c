@@ -32,18 +32,19 @@ RLEListResult AsciiArtTool (FILE* source,FILE* target,char* flag){
         if(!strcmp(flag,"-i"))
         {
             result = invertAsciiArt(source,target);
-            return result; 
             }
         if(!strcmp(flag,"-e"))
         {
             if(source){
                 list = asciiArtRead(source);
                 result = asciiArtPrintEncoded(list, target);
-                RLEListDestroy(list);
+            }
+            else{
+                result = RLE_LIST_NULL_ARGUMENT;
             }
         }
     }
-    
+    RLEListDestroy(list);
     return result;
 }
 
@@ -52,22 +53,23 @@ int main(int argc, char** argv)
     if (argv[2]==NULL || argv[3]==NULL){
         return 0;
     }
-    if(argc<=0 || argc>4){
+    if(argc!=4){
         return 0;
     }
     FILE* source = fopen(argv[2], "r");
     FILE* target = fopen(argv[3], "w");
-    if(!source || !target) return 0;
+    if(!source || !target){
+        return 0;
+    } 
     RLEListResult result = AsciiArtTool(source,target,argv[1]);
     if (result == RLE_LIST_SUCCESS)
     {
         printf("success");
     }
-
+    
    fclose(source);
    fclose(target);
 
     return 0;
 }
-
 

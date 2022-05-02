@@ -163,7 +163,6 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
         counter+=(2+intLength(ToCount->repeatition));
         ToCount=ToCount->next;
     }
-    RLEListDestroy(ToCount);
     char* ListString = malloc(sizeof(char)*(counter+1));
     if (ListString==NULL)
     {
@@ -189,7 +188,6 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
         ListString[index++]='\n';
         tmp=tmp->next;
     }
-    RLEListDestroy(tmp);
     if(result != NULL){
         *result =RLE_LIST_SUCCESS;
     }
