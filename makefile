@@ -5,7 +5,7 @@ ASCII_ART_TOOL= tool/AsciiArtTool
 RLELIST= /home/mtm/public/2122b/ex1/RLEList
 OBJS = $(ASCII_ART_TOOL).o $(MAIN).o RLEList.o
 EXEC = AsciiArtTool
-CFLAGS = -std=c99 -I/home/waseem.lawin/ex1_ -Itool -Wall -pedantic-errors -Werror -DNDEBUG -g
+CFLAGS = -std=c99 -I/home/mtm/public/2122b/ex1/ -Itool -Wall -pedantic-errors -Werror -DNDEBUG -g
 $(EXEC) : $(OBJS)
 		$(CC) $(CFLAGS) $(OBJS)  -o $@
 $(ASCII_ART_TOOL).o: $(ASCII_ART_TOOL).c $(RLELIST).h $(ASCII_ART_TOOL).h struct.c
