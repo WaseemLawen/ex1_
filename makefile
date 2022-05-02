@@ -8,9 +8,9 @@ EXEC = AsciiArtTool
 CFLAGS = -std=c99 -I/home/mtm/public/2122b/ex1/ -Itool -Wall -pedantic-errors -Werror -DNDEBUG -g
 $(EXEC) : $(OBJS)
 		$(CC) $(CFLAGS) $(OBJS)  -o $@
-$(ASCII_ART_TOOL).o: $(ASCII_ART_TOOL).c $(RLELIST).h $(ASCII_ART_TOOL).h struct.c
-$(MAIN).o: $(MAIN).c $(RLELIST).h $(ASCII_ART_TOOL).h struct.c
-RLEList.o: RLEList.c $(RLELIST).h struct.c
+$(ASCII_ART_TOOL).o: $(ASCII_ART_TOOL).c $(RLELIST).h $(ASCII_ART_TOOL).h 
+$(MAIN).o: $(MAIN).c $(RLELIST).h $(ASCII_ART_TOOL).h 
+RLEList.o: RLEList.c $(RLELIST).h 
 clean:
 	  rm -f $(OBJS) $(EXEC)
 
